@@ -5,13 +5,18 @@ import calisma.utilities.Driver;
 import com.github.javafaker.Faker;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.Set;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 
 public class NeredekalStepDefinition {
 
@@ -32,11 +37,23 @@ public class NeredekalStepDefinition {
     @Then("form doldurulur")
     public void form_doldurulur() throws InterruptedException {
         Thread.sleep(2000);
-        WebElement modelDialogBox = Driver.getDriver().findElement(By.className("css-kaqln6"));
-        modelDialogBox.findElement(By.xpath("(//input[@type='text'])[1]")).sendKeys("Ali");
+        WebElement input = Driver.getDriver().findElement(By.xpath("(//input[@type='text'])[1]"));
+        Faker faker = new Faker();
+        input.sendKeys(faker.name().firstName() +Keys.TAB +
+                faker.name().lastName() +Keys.TAB +
+                faker.phoneNumber().cellPhone() +Keys.TAB +
+                faker.internet().emailAddress() +Keys.TAB +
+                faker.internet().password().getBytes(StandardCharsets.UTF_8).toString());
+        Driver.getDriver().findElement(By.xpath("(//div[@class='css-obkqui'])[1]")).click();
+        Driver.getDriver().findElement(By.xpath("(//div[@class='css-obkqui'])[2]")).click();
+        Driver.getDriver().findElement(By.xpath("(//div[@class='css-ee4crf'])[1]")).click();
+        Driver.getDriver().findElement(By.xpath("(//div[@class='css-1lsb456'])[1]")).click();
+
     }
     @Then("kullanıcının giriş yaptığı doğrulanır")
     public void kullanıcının_giriş_yaptığı_doğrulanır() {
+        WebElement dogrulamaYazisi = Driver.getDriver().findElement(By.xpath("//div[text()='E-posta adresinize doğrulama bağlantısı gönderildi. Lütfen e-posta adresinizi doğruladıktan sonra giriş yapınız.']"));
+        Assert.assertEquals("E-posta adresinize doğrulama bağlantısı gönderildi. Lütfen e-posta adresinizi doğruladıktan sonra giriş yapınız.",dogrulamaYazisi.getText());
 
     }
     @Then("arama kısmına {string} yazılır")

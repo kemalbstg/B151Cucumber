@@ -3,3 +3,4 @@ Feature: US001_Neredekal_Filtre_Testi
     Given kullanıcı neredekal sayfasına gider
     Then üyelik altından üye ol a tıklanır
     And form doldurulur
+    Then kullanıcının giriş yaptığı doğrulanır
