@@ -17,6 +17,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class NeredekalStepDefinition {
 
@@ -50,27 +52,76 @@ public class NeredekalStepDefinition {
         Driver.getDriver().findElement(By.xpath("(//div[@class='css-1lsb456'])[1]")).click();
 
     }
-    @Then("kullanıcının giriş yaptığı doğrulanır")
-    public void kullanıcının_giriş_yaptığı_doğrulanır() {
+    @Then("üyelik işlemi doğrulanır")
+    public void üyelik_işlemi_doğrulanır() throws InterruptedException {
+        Thread.sleep(2000);
         WebElement dogrulamaYazisi = Driver.getDriver().findElement(By.xpath("//div[text()='E-posta adresinize doğrulama bağlantısı gönderildi. Lütfen e-posta adresinizi doğruladıktan sonra giriş yapınız.']"));
         Assert.assertEquals("E-posta adresinize doğrulama bağlantısı gönderildi. Lütfen e-posta adresinizi doğruladıktan sonra giriş yapınız.",dogrulamaYazisi.getText());
+        Driver.getDriver().findElement(By.xpath("//button[@class='css-1xshlv0']")).click();
+    }
+    @Then("giriş yapılır")
+    public void giriş_yapılır() throws InterruptedException {
+        Thread.sleep(3000);
+        Actions actions = new Actions(Driver.getDriver());
+        WebElement üyeol = Driver.getDriver().findElement(By.xpath("//div[text()='Üyelik']"));
+        actions.moveToElement(üyeol).perform();
+        Thread.sleep(2000);
+        Driver.getDriver().findElement(By.xpath("//div[text()='Giriş Yap']")).click();
+        String email = "kemaleddinbastug@gmail.com";
+        String password = "Bastug_0745";
+        Driver.getDriver().findElement(By.xpath("(//input[@type='text'])[1]")).sendKeys(email +Keys.TAB + password);
+        Driver.getDriver().findElement(By.xpath("(//div[@class='css-1lsb456'])[1]")).click();
 
     }
-    @Then("arama kısmına {string} yazılır")
-    public void arama_kısmına_yazılır(String string) {
 
+    @Then("giriş doğrulanır")
+    public void giriş_doğrulanır() {
+        WebElement uyelikİsmi = Driver.getDriver().findElement(By.xpath("//div[@class='css-19p82hs']"));
+        String uyeİsmi = "Kemaleddin B.";
+        Assert.assertEquals(uyeİsmi,uyelikİsmi.getText());
+    }
+
+    @Then("arama kısmına bodrum otelleri yazılır")
+    public void arama_kısmına_yazılır() throws InterruptedException {
+       WebElement aramKutusu = Driver.getDriver().findElement(By.xpath("(//input[@type='text'])[1]"));
+       aramKutusu.sendKeys("Bodrum Otelleri");
+        Thread.sleep(2000);
+        Driver.getDriver().findElement(By.xpath("(//div[@class='css-1svfu3x'])[1]")).click();
     }
     @Then("tarih olarak bugün ve sonraki gün seçilir")
-    public void tarih_olarak_bugün_ve_sonraki_gün_seçilir() {
+    public void tarih_olarak_bugün_ve_sonraki_gün_seçilir() throws InterruptedException {
+        Thread.sleep(2000);
+        Driver.getDriver().findElement(By.xpath("//div[@class='css-157dy9c']")).click();
+        Driver.getDriver().findElement(By.xpath("(//div[@class='css-nhabpp'])[7]")).click();
+        Driver.getDriver().findElement(By.xpath("(//div[@class='css-nhabpp'])[8]")).click();
+        Driver.getDriver().findElement(By.xpath("(//div[@class='css-1lsb456'])[3]")).click();
+
 
     }
     @Then("filtreleme alanında fiyat önce en düşük seçilir")
-    public void filtreleme_alanında_fiyat_önce_en_düşük_seçilir() {
+    public void filtreleme_alanında_fiyat_önce_en_düşük_seçilir() throws InterruptedException {
+        Thread.sleep(5000);
+        WebElement siralama = Driver.getDriver().findElement(By.xpath("//div[@class='css-1somsfw']"));
+        siralama.click();
+        WebElement enDusuk = Driver.getDriver().findElement(By.xpath("//div[text()='Fiyat: Önce En Düşük']"));
+        enDusuk.click();
+         //WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(15));
+         //wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[@class='css-14s2p40']")));
+
+
 
     }
-    @Then("fiyatların en düşükten yükseğe olduğu doğrulanır")
-    public void fiyatların_en_düşükten_yükseğe_olduğu_doğrulanır() {
+    @Then("fiyatların düşükten yüksege olarak sıralandığı doğrulanır")
+    public void fiyatların_düşükten_yüksege_olarak_sıralandığı_doğrulanır() throws InterruptedException {
+        WebElement actualSiralama = Driver.getDriver().findElement(By.xpath("//div[@class='css-1somsfw']"));
+        String expectedSiralama = "Fiyat: Önce En Düşük";
+        Assert.assertEquals(expectedSiralama , actualSiralama.getText());
+        Thread.sleep(3000);
+    }
 
+    @Then("sayfa kapatilir")
+    public void sayfa_kapatilir() {
+       Driver.getDriver().quit();
     }
 
 
