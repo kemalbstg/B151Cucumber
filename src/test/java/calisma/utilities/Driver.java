@@ -9,17 +9,10 @@ import org.openqa.selenium.safari.SafariDriver;
 
 import java.time.Duration;
 
-// POM (PAGE OBJECT MODEL)
-// Test senaryolarının daha az kod ile yazılmasına
-// ve bakımının daha kolay yapılmasına
-// olanak sağlayan bir test yöntemidir.
-// testNG ve cucumberda pom kalıbını kullanırız
 public class Driver {
 
     private Driver() {
     }
-
-
 
 static WebDriver driver;
     public static WebDriver getDriver() {
@@ -54,15 +47,15 @@ static WebDriver driver;
 
     }
     public static void closeDriver() {
-        if (driver != null) {//-->driver'a değer ATANMIŞSA
+        if (driver != null) {
             driver.close();
-            driver = null; //-->driver'1 kapattıktan sonra boşalt
+            driver = null;
         }
     }
     public static void quitDriver() {
-        if (driver != null) {//-->driver'a değer ATANMIŞSA
+        if (driver != null) {
             driver.quit();
-            driver = null; //-->driver'1 kapattıktan sonra boşalt
+            driver = null;
 
         }
     }

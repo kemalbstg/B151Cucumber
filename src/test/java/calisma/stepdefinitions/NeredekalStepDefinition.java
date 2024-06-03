@@ -1,5 +1,6 @@
 package calisma.stepdefinitions;
 
+import calisma.pages.NeredeKalPage;
 import calisma.utilities.ConfigReader;
 import calisma.utilities.Driver;
 import com.github.javafaker.Faker;
@@ -19,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class NeredekalStepDefinition {
 
@@ -83,17 +85,22 @@ public class NeredekalStepDefinition {
 
     @Then("arama kısmına bodrum otelleri yazılır")
     public void arama_kısmına_yazılır() throws InterruptedException {
-       WebElement aramKutusu = Driver.getDriver().findElement(By.xpath("(//input[@type='text'])[1]"));
-       aramKutusu.sendKeys("Bodrum Otelleri");
+        NeredeKalPage neredeKalPage = new NeredeKalPage();
+        neredeKalPage.aramaKutusu.sendKeys("Bodrum Otelleri");
         Thread.sleep(2000);
         Driver.getDriver().findElement(By.xpath("(//div[@class='css-1svfu3x'])[1]")).click();
     }
     @Then("tarih olarak bugün ve sonraki gün seçilir")
     public void tarih_olarak_bugün_ve_sonraki_gün_seçilir() throws InterruptedException {
         Thread.sleep(2000);
-        Driver.getDriver().findElement(By.xpath("//div[@class='css-157dy9c']")).click();
-        Driver.getDriver().findElement(By.xpath("(//div[@class='css-nhabpp'])[7]")).click();
-        Driver.getDriver().findElement(By.xpath("(//div[@class='css-nhabpp'])[8]")).click();
+        Driver.getDriver().findElement(By.xpath("(//div[@class='css-stfmgt'])[1]")).click();
+        List<WebElement> dates = Driver.getDriver().findElements(By.xpath("//div[@class='css-7t4wwb']"));
+        if (dates.size() > 0) {
+            dates.get(0).click();
+        }
+        if (dates.size() > 1) {
+            dates.get(1).click();
+        }
         Driver.getDriver().findElement(By.xpath("(//div[@class='css-1lsb456'])[3]")).click();
 
 
@@ -121,7 +128,8 @@ public class NeredekalStepDefinition {
 
     @Then("sayfa kapatilir")
     public void sayfa_kapatilir() {
-       Driver.getDriver().quit();
+
+        Driver.getDriver().quit();
     }
 
 
